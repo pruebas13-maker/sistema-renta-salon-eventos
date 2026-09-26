@@ -369,7 +369,7 @@ window.db = window.supabase.createClient(
 );
         <script>
 async function probarBaseDatos() {
-    const { data, error } = await db
+    const { data, error } = await window.db
         .from("clientes")
         .select("*");
 
