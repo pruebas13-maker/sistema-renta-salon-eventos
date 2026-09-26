@@ -6,6 +6,76 @@
 <title>Sistema de Renta de Salón</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+ /* ===== PANTALLA DE LOGIN ===== */
+
+.login-screen{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:linear-gradient(135deg,#111827,#4c1d95);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.login-box{
+  width:min(400px,100%);
+  background:#fff;
+  border-radius:20px;
+  padding:30px;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+  text-align:center;
+}
+
+.login-icon{
+  font-size:45px;
+  margin-bottom:10px;
+}
+
+.login-box h2{
+  margin:0;
+  color:#1f2937;
+  font-size:24px;
+}
+
+.login-box p{
+  color:#6b7280;
+  font-size:14px;
+  margin-bottom:22px;
+}
+
+.login-box input{
+  width:100%;
+  padding:13px;
+  margin-bottom:12px;
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  font-size:15px;
+  outline:none;
+}
+
+.login-box input:focus{
+  border-color:#7c3aed;
+  box-shadow:0 0 0 3px rgba(124,58,237,.12);
+}
+
+.login-button{
+  width:100%;
+  margin-top:5px;
+  padding:13px;
+}
+
+.login-error{
+  color:#dc2626;
+  font-size:13px;
+  margin-top:12px;
+  min-height:18px;
+}
+
+.login-screen.hidden{
+  display:none;
+}
 :root{--primary:#7c3aed;--primary2:#5b21b6;--bg:#f5f3ff;--card:#fff;--text:#1f2937;--muted:#6b7280;--border:#e5e7eb;--danger:#dc2626;--success:#059669;--shadow:0 8px 24px rgba(31,41,55,.08)}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
 header{background:linear-gradient(135deg,#111827,#4c1d95);color:#fff;padding:22px 18px;position:sticky;top:0;z-index:20}.header{max-width:1150px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}
@@ -94,6 +164,8 @@ footer{text-align:center;color:var(--muted);padding:30px 15px;font-size:12px}
 <div id="modalBody"></div>
 </div></div>
 <div id="msg" class="msg"></div>
+
+
 
 <script>
 /* ====== PEGA AQUÍ TUS DATOS DE SUPABASE ====== */
@@ -216,7 +288,70 @@ function abrirPago(){if(!eventos.length){aviso("Primero registra un evento");ret
 async function guardarPago(ev){ev.preventDefault();const obj={id_evento:Number($("p_evento").value),fecha_pago:$("p_fecha").value,monto:Number($("p_monto").value)};const r=await db.from(T.pagos).insert(obj);if(r.error)return aviso("No se pudo guardar: "+r.error.message);cerrarModal();aviso("Pago registrado");await cargarTodo()}
 async function eliminarPago(id){if(!confirm("¿Eliminar este pago?"))return;const r=await db.from(T.pagos).delete().eq("id_pago",id);if(r.error)aviso("No se pudo eliminar: "+r.error.message);else{aviso("Pago eliminado");await cargarTodo()}}
 
-window.addEventListener("load",cargarTodo);
+
+ // ===== DATOS DE ACCESO =====
+const USUARIO = "admin";
+const CONTRASENA = "123456";
+
+// ===== INICIAR SESIÓN =====
+function iniciarSesion(){
+
+  const usuario = $("loginUser").value.trim();
+  const password = $("loginPassword").value;
+
+  if(usuario === USUARIO && password === CONTRASENA){
+
+    $("loginScreen").classList.add("hidden");
+    $("loginError").textContent = "";
+
+    // Cargar información del sistema
+    cargarTodo();
+
+  }else{
+
+    $("loginError").textContent =
+      "Usuario o contraseña incorrectos.";
+
+  }
+}
+
+// Permitir entrar presionando Enter
+$("loginPassword").addEventListener("keydown",function(e){
+
+  if(e.key === "Enter"){
+    iniciarSesion();
+  }
+
+});
 </script>
 </body>
+ <!-- ===== LOGIN ===== -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-box">
+    <div class="login-icon">🏛️</div>
+    <h2>Acceso al sistema</h2>
+    <p>Ingresa tus credenciales para continuar</p>
+
+    <input
+      type="text"
+      id="loginUser"
+      placeholder="Usuario"
+      autocomplete="username"
+    >
+
+    <input
+      type="password"
+      id="loginPassword"
+      placeholder="Contraseña"
+      autocomplete="current-password"
+    >
+
+    <button class="primary login-button" onclick="iniciarSesion()">
+      Iniciar sesión
+    </button>
+
+    <div id="loginError" class="login-error"></div>
+  </div>
+</div>
+<!-- ===== FIN LOGIN ===== -->
 </html>
