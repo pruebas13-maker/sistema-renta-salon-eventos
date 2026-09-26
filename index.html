@@ -2,36 +2,30 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Sistema de Renta de Salón</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--primary:#7c3aed;--primary2:#5b21b6;--bg:#f5f3ff;--card:#fff;--text:#1f2937;--muted:#6b7280;--border:#e5e7eb;--danger:#dc2626;--success:#059669;--shadow:0 8px 24px rgba(31,41,55,.08)}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
-header{background:linear-gradient(135deg,#111827,#4c1d95);color:#fff;padding:22px 18px;position:sticky;top:0;z-index:20}
-.header{max-width:1150px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}
-h1{margin:0;font-size:24px}.sub{margin:4px 0 0;color:#ddd;font-size:13px}
-button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
-.primary{background:var(--primary);color:white}.primary:hover{background:var(--primary2)}
-.ghost{background:#fff1;color:#fff;border:1px solid #ffffff33}.danger{background:#fee2e2;color:#991b1b}.small{padding:7px 10px;font-size:12px}
-nav{max-width:1150px;margin:14px auto 0;display:flex;gap:8px;overflow:auto;padding-bottom:2px}
-nav button{background:#ffffff18;color:white;white-space:nowrap}nav button.active{background:#fff;color:#4c1d95}
-main{max-width:1150px;margin:22px auto;padding:0 14px}.page{display:none}.page.active{display:block}
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
-.stat{font-size:28px;font-weight:800;margin-top:7px}.label{color:var(--muted);font-size:13px}
+header{background:linear-gradient(135deg,#111827,#4c1d95);color:#fff;padding:22px 18px;position:sticky;top:0;z-index:20}.header{max-width:1150px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}
+h1{margin:0;font-size:24px}.sub{margin:4px 0 0;color:#ddd;font-size:13px}button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+.primary{background:var(--primary);color:#fff}.primary:hover{background:var(--primary2)}.ghost{background:#ffffff1a;color:#fff;border:1px solid #ffffff33}.danger{background:#fee2e2;color:#991b1b}.small{padding:7px 10px;font-size:12px}
+nav{max-width:1150px;margin:14px auto 0;display:flex;gap:8px;overflow:auto;padding-bottom:2px}nav button{background:#ffffff18;color:#fff;white-space:nowrap}nav button.active{background:#fff;color:#4c1d95}
+main{max-width:1150px;margin:22px auto;padding:0 14px}.page{display:none}.page.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}.stat{font-size:28px;font-weight:800;margin-top:7px}.label{color:var(--muted);font-size:13px}
 .section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 12px}.section-head h2{margin:0;font-size:19px}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.toolbar input,.toolbar select,.form input,.form select,.form textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:10px;background:#fff;font:inherit}
-.toolbar .search{flex:1;min-width:200px}
-.table-wrap{overflow:auto;background:#fff;border:1px solid var(--border);border-radius:14px}
-table{width:100%;border-collapse:collapse;min-width:700px}th,td{padding:11px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}th{background:#fafafa;color:#374151}
-.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-size:12px;font-weight:700}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.toolbar input,.toolbar select,.form input,.form select,.form textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:10px;background:#fff;font:inherit}.toolbar .search{flex:1;min-width:200px}
+.table-wrap{overflow:auto;background:#fff;border:1px solid var(--border);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:700px}th,td{padding:11px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}th{background:#fafafa;color:#374151}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-size:12px;font-weight:700}.badge.ok{background:#d1fae5;color:#065f46}.badge.no{background:#fee2e2;color:#991b1b}
 .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.full{grid-column:1/-1}.form label{font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:5px}
 .actions{display:flex;gap:7px;flex-wrap:wrap}.empty{text-align:center;padding:28px;color:var(--muted)}
-.modal{display:none;position:fixed;inset:0;background:#0008;z-index:50;padding:18px;align-items:center;justify-content:center}.modal.open{display:flex}
-.modal-box{background:#fff;border-radius:18px;width:min(680px,100%);max-height:92vh;overflow:auto;padding:20px}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.modal-head h3{margin:0}
-.close{background:#f3f4f6;color:#111}.msg{position:fixed;right:16px;bottom:16px;z-index:100;display:none;padding:13px 16px;border-radius:12px;background:#111827;color:#fff;box-shadow:var(--shadow);max-width:330px}.msg.show{display:block}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:50;padding:18px;align-items:center;justify-content:center}.modal.open{display:flex}.modal-box{background:#fff;border-radius:18px;width:min(680px,100%);max-height:92vh;overflow:auto;padding:20px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.modal-head h3{margin:0}.close{background:#f3f4f6;color:#111}
+.msg{position:fixed;right:16px;bottom:16px;z-index:100;display:none;padding:13px 16px;border-radius:12px;background:#111827;color:#fff;box-shadow:var(--shadow);max-width:330px}.msg.show{display:block}
 .list{display:grid;gap:9px}.item{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;justify-content:space-between;gap:10px}
+.status{display:flex;align-items:center;gap:7px;font-size:12px}.dot{width:9px;height:9px;border-radius:50%;background:#dc2626}.dot.ok{background:#059669}
+.help{padding:12px;border-radius:12px;background:#f3f4f6;color:#4b5563;font-size:12px;margin-bottom:12px}
 footer{text-align:center;color:var(--muted);padding:30px 15px;font-size:12px}
 @media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.header{align-items:flex-start;flex-direction:column}}
 @media(max-width:480px){.cards{grid-template-columns:1fr 1fr}.card{padding:14px}.stat{font-size:22px}h1{font-size:20px}}
@@ -41,7 +35,7 @@ footer{text-align:center;color:var(--muted);padding:30px 15px;font-size:12px}
 <header>
 <div class="header">
 <div><h1>🏛️ Sistema de Renta de Salón</h1><div class="sub">Administración de clientes, eventos, servicios, empleados y pagos</div></div>
-<button class="ghost" onclick="cargarTodo()">↻ Actualizar</button>
+<div class="status"><span id="dot" class="dot"></span><span id="estadoBD">Conectando...</span><button class="ghost" onclick="cargarTodo()">↻ Actualizar</button></div>
 </div>
 <nav>
 <button class="active" onclick="mostrar('inicio',this)">Inicio</button>
@@ -102,47 +96,32 @@ footer{text-align:center;color:var(--muted);padding:30px 15px;font-size:12px}
 <div id="msg" class="msg"></div>
 
 <script>
-/* ================================
-   CONFIGURACIÓN SUPABASE
-   ================================ */
+/* ====== PEGA AQUÍ TUS DATOS DE SUPABASE ====== */
 const SUPABASE_URL = "https://afmjoeohmxenekqwtcly.supabase.co";
 const SUPABASE_KEY = "sb_publishable_J1MWTepKPnJ6CHGemuf1mg_aCzgXtAm";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+/* ============================================== */
 
-/* Nombres reales de las tablas que mostraste */
-const T = {
-  clientes:"clientes",
-  servicios:"servicios",
-  empleados:"empleados",
-  eventos:"eventos",
-  pagos:"pagos",
-  detalle:"detalle_evento",
-  asignacion:"asignación_empleados"
-};
-
-let clientes=[], eventos=[], servicios=[], empleados=[], pagos=[];
-let editId=null;
-
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const T={clientes:"clientes",servicios:"servicios",empleados:"empleados",eventos:"eventos",pagos:"pagos",detalle:"detalle_evento",asignacion:"asignación_empleados"};
+let clientes=[],eventos=[],servicios=[],empleados=[],pagos=[],editId=null;
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function dinero(v){return new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN"}).format(Number(v)||0)}
-function aviso(t){const m=$("msg");m.textContent=t;m.classList.add("show");setTimeout(()=>m.classList.remove("show"),2600)}
-function abrirModal(t,body){$("modalTitle").textContent=t;$("modalBody").innerHTML=body;$("modal").classList.add("open")}
+function aviso(t){const m=$("msg");m.textContent=t;m.classList.add("show");clearTimeout(window.__msg);window.__msg=setTimeout(()=>m.classList.remove("show"),2800)}
+function abrirModal(t,b){$("modalTitle").textContent=t;$("modalBody").innerHTML=b;$("modal").classList.add("open")}
 function cerrarModal(){$("modal").classList.remove("open");editId=null}
+$("modal").addEventListener("click",e=>{if(e.target.id==="modal")cerrarModal()});
+
 function mostrar(id,btn){
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
- $(id).classList.add("active");
- document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
- if(btn)btn.classList.add("active");
- if(id==="clientes")renderClientes();
- if(id==="eventos")renderEventos();
- if(id==="servicios")renderServicios();
- if(id==="empleados")renderEmpleados();
- if(id==="pagos")renderPagos();
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");
+ document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");
+ if(id==="clientes")renderClientes();if(id==="eventos")renderEventos();if(id==="servicios")renderServicios();if(id==="empleados")renderEmpleados();if(id==="pagos")renderPagos();
 }
 
+function setBD(ok,text){$("dot").className="dot"+(ok?" ok":"");$("estadoBD").textContent=text}
 async function cargarTodo(){
  try{
+  setBD(false,"Conectando...");
   const [c,e,s,em,p]=await Promise.all([
    db.from(T.clientes).select("*").order("id_cliente",{ascending:false}),
    db.from(T.eventos).select("*").order("fecha_evento",{ascending:true}),
@@ -152,111 +131,92 @@ async function cargarTodo(){
   ]);
   for(const r of [c,e,s,em,p])if(r.error)throw r.error;
   clientes=c.data||[];eventos=e.data||[];servicios=s.data||[];empleados=em.data||[];pagos=p.data||[];
-  $("sClientes").textContent=clientes.length;
-  $("sEventos").textContent=eventos.length;
-  $("sServicios").textContent=servicios.length;
+  $("sClientes").textContent=clientes.length;$("sEventos").textContent=eventos.length;$("sServicios").textContent=servicios.length;
   $("sPagos").textContent=dinero(pagos.reduce((a,x)=>a+Number(x.monto||0),0));
-  renderClientes();renderEventos();renderServicios();renderEmpleados();renderPagos();renderProximos();
- }catch(err){console.error(err);aviso("Error al cargar datos: "+(err.message||err))}
+  renderClientes();renderEventos();renderServicios();renderEmpleados();renderPagos();renderProximos();setBD(true,"Base de datos conectada");
+ }catch(err){console.error(err);setBD(false,"Error de conexión");aviso("No se pudieron cargar los datos: "+(err.message||err))}
 }
-
 function nombreCliente(id){const x=clientes.find(c=>String(c.id_cliente)===String(id));return x?`${x.nombres||""} ${x.apellido_paterno||""} ${x.apellido_materno||""}`.replace(/\s+/g," ").trim():"Sin cliente"}
 function nombreEvento(id){const x=eventos.find(e=>String(e.id_evento)===String(id));return x?`${x.fecha_evento||""} · ${x.tipo_evento||"Evento"}`:"Sin evento"}
 
 function renderClientes(){
  const q=($("buscarCliente")?.value||"").toLowerCase();
  const a=clientes.filter(c=>`${c.nombres} ${c.apellido_paterno} ${c.apellido_materno} ${c.telefono} ${c.correo}`.toLowerCase().includes(q));
- $("tablaClientes").innerHTML=a.length?a.map(c=>`<tr>
- <td><b>${esc(`${c.nombres||""} ${c.apellido_paterno||""} ${c.apellido_materno||""}`)}</b></td>
- <td>${esc(c.telefono)}</td><td>${esc(c.correo)}</td>
- <td class="actions"><button class="small primary" onclick="editarCliente(${c.id_cliente})">Editar</button><button class="small danger" onclick="eliminarCliente(${c.id_cliente})">Eliminar</button></td></tr>`).join(""):`<tr><td colspan="4" class="empty">No hay clientes.</td></tr>`;
+ $("tablaClientes").innerHTML=a.length?a.map(c=>`<tr><td><b>${esc(`${c.nombres||""} ${c.apellido_paterno||""} ${c.apellido_materno||""}`)}</b></td><td>${esc(c.telefono)}</td><td>${esc(c.correo)}</td><td class="actions"><button class="small primary" onclick="editarCliente(${c.id_cliente})">Editar</button><button class="small danger" onclick="eliminarCliente(${c.id_cliente})">Eliminar</button></td></tr>`).join(""):`<tr><td colspan="4" class="empty">No hay clientes.</td></tr>`;
 }
 function renderEventos(){
  const q=($("buscarEvento")?.value||"").toLowerCase();
  const a=eventos.filter(e=>`${e.fecha_evento} ${e.tipo_evento} ${e.estado_evento} ${nombreCliente(e.id_cliente)}`.toLowerCase().includes(q));
- $("tablaEventos").innerHTML=a.length?a.map(e=>`<tr>
- <td>${esc(e.fecha_evento)}</td><td>${esc((e.hora_evento||"")+" - "+(e.hora_fin||""))}</td><td>${esc(nombreCliente(e.id_cliente))}</td>
- <td>${esc(e.tipo_evento)}</td><td><span class="badge">${esc(e.estado_evento||"Pendiente")}</span></td>
- <td class="actions"><button class="small primary" onclick="editarEvento(${e.id_evento})">Editar</button><button class="small danger" onclick="eliminarEvento(${e.id_evento})">Eliminar</button></td></tr>`).join(""):`<tr><td colspan="6" class="empty">No hay eventos.</td></tr>`;
+ $("tablaEventos").innerHTML=a.length?a.map(e=>`<tr><td>${esc(e.fecha_evento)}</td><td>${esc((e.hora_evento||"")+" - "+(e.hora_fin||""))}</td><td>${esc(nombreCliente(e.id_cliente))}</td><td>${esc(e.tipo_evento)}</td><td><span class="badge">${esc(e.estado_evento||"Pendiente")}</span></td><td class="actions"><button class="small primary" onclick="editarEvento(${e.id_evento})">Editar</button><button class="small danger" onclick="eliminarEvento(${e.id_evento})">Eliminar</button></td></tr>`).join(""):`<tr><td colspan="6" class="empty">No hay eventos.</td></tr>`;
 }
 function renderServicios(){
- $("tablaServicios").innerHTML=servicios.length?servicios.map(s=>`<tr><td><b>${esc(s.nombre_servicio)}</b></td><td>${dinero(s.precio_unitario)}</td><td>${esc(s.descripcion)}</td>
- <td class="actions"><button class="small primary" onclick="editarServicio(${s.id_servicio})">Editar</button><button class="small danger" onclick="eliminarServicio(${s.id_servicio})">Eliminar</button></td></tr>`).join(""):`<tr><td colspan="4" class="empty">No hay servicios.</td></tr>`;
+ $("tablaServicios").innerHTML=servicios.length?servicios.map(s=>`<tr><td><b>${esc(s.nombre_servicio)}</b></td><td>${dinero(s.precio_unitario)}</td><td>${esc(s.descripcion)}</td><td class="actions"><button class="small primary" onclick="editarServicio(${s.id_servicio})">Editar</button><button class="small danger" onclick="eliminarServicio(${s.id_servicio})">Eliminar</button></td></tr>`).join(""):`<tr><td colspan="4" class="empty">No hay servicios.</td></tr>`;
 }
 function renderEmpleados(){
- $("tablaEmpleados").innerHTML=empleados.length?empleados.map(e=>`<tr><td><b>${esc(`${e.nombres||""} ${e.apellido_paterno||""} ${e.apellido_materno||""}`)}</b></td><td>${esc(e.telefono)}</td><td>${esc(e.puesto)}</td><td>${dinero(e.salario)}</td>
- <td class="actions"><button class="small primary" onclick="editarEmpleado(${e.id_empleado})">Editar</button><button class="small danger" onclick="eliminarEmpleado(${e.id_empleado})">Eliminar</button></td></tr>`).join(""):`<tr><td colspan="5" class="empty">No hay empleados.</td></tr>`;
+ $("tablaEmpleados").innerHTML=empleados.length?empleados.map(e=>`<tr><td><b>${esc(`${e.nombres||""} ${e.apellido_paterno||""} ${e.apellido_materno||""}`)}</b></td><td>${esc(e.telefono)}</td><td>${esc(e.puesto)}</td><td>${dinero(e.salario)}</td><td class="actions"><button class="small primary" onclick="editarEmpleado(${e.id_empleado})">Editar</button><button class="small danger" onclick="eliminarEmpleado(${e.id_empleado})">Eliminar</button></td></tr>`).join(""):`<tr><td colspan="5" class="empty">No hay empleados.</td></tr>`;
 }
 function renderPagos(){
- $("tablaPagos").innerHTML=pagos.length?pagos.map(p=>`<tr><td>${esc(p.fecha_pago)}</td><td>${esc(nombreEvento(p.id_evento))}</td><td><b>${dinero(p.monto)}</b></td>
- <td class="actions"><button class="small danger" onclick="eliminarPago(${p.id_pago})">Eliminar</button></td></tr>`).join(""):`<tr><td colspan="4" class="empty">No hay pagos.</td></tr>`;
+ $("tablaPagos").innerHTML=pagos.length?pagos.map(p=>`<tr><td>${esc(p.fecha_pago)}</td><td>${esc(nombreEvento(p.id_evento))}</td><td><b>${dinero(p.monto)}</b></td><td><button class="small danger" onclick="eliminarPago(${p.id_pago})">Eliminar</button></td></tr>`).join(""):`<tr><td colspan="4" class="empty">No hay pagos.</td></tr>`;
 }
 function renderProximos(){
- const a=[...eventos].sort((x,y)=>String(x.fecha_evento).localeCompare(String(y.fecha_evento))).slice(0,5);
- $("proximos").innerHTML=a.length?a.map(e=>`<div class="item"><div><b>${esc(e.tipo_evento||"Evento")}</b><div class="label">${esc(e.fecha_evento)} · ${esc(e.hora_evento||"")} · ${esc(nombreCliente(e.id_cliente))}</div></div><span class="badge">${esc(e.estado_evento||"Pendiente")}</span></div>`).join(""):`<div class="card empty">No hay eventos registrados.</div>`;
+ const hoy=new Date().toISOString().slice(0,10);
+ const a=[...eventos].filter(e=>!e.fecha_evento||e.fecha_evento>=hoy).sort((x,y)=>String(x.fecha_evento).localeCompare(String(y.fecha_evento))).slice(0,5);
+ $("proximos").innerHTML=a.length?a.map(e=>`<div class="item"><div><b>${esc(e.tipo_evento||"Evento")}</b><div class="label">${esc(e.fecha_evento)} · ${esc(e.hora_evento||"")} · ${esc(nombreCliente(e.id_cliente))}</div></div><span class="badge">${esc(e.estado_evento||"Pendiente")}</span></div>`).join(""):`<div class="card empty">No hay próximos eventos registrados.</div>`;
 }
 
-function formCliente(c={}){
- return `<form class="form" onsubmit="guardarCliente(event)">
- <div class="form-grid">
- <div><label>Nombres *</label><input id="f_nombres" required value="${esc(c.nombres)}"></div>
- <div><label>Apellido paterno</label><input id="f_ap" value="${esc(c.apellido_paterno)}"></div>
- <div><label>Apellido materno</label><input id="f_am" value="${esc(c.apellido_materno)}"></div>
- <div><label>Teléfono</label><input id="f_tel" value="${esc(c.telefono)}"></div>
- <div class="full"><label>Correo</label><input id="f_correo" type="email" value="${esc(c.correo)}"></div>
- </div><br><button class="primary">Guardar cliente</button></form>`;
-}
+function formCliente(c={}){return `<form class="form" onsubmit="guardarCliente(event)"><div class="form-grid">
+<div><label>Nombres *</label><input id="f_nombres" required value="${esc(c.nombres)}"></div><div><label>Apellido paterno</label><input id="f_ap" value="${esc(c.apellido_paterno)}"></div>
+<div><label>Apellido materno</label><input id="f_am" value="${esc(c.apellido_materno)}"></div><div><label>Teléfono</label><input id="f_tel" value="${esc(c.telefono)}"></div>
+<div class="full"><label>Correo</label><input id="f_correo" type="email" value="${esc(c.correo)}"></div></div><br><button class="primary">Guardar cliente</button></form>`}
 function abrirCliente(id=null){editId=id;abrirModal(id?"Editar cliente":"Nuevo cliente",formCliente(id?clientes.find(x=>x.id_cliente==id):{}))}
-async function guardarCliente(ev){
- ev.preventDefault();
- const obj={nombres:$("f_nombres").value.trim(),apellido_paterno:$("f_ap").value.trim(),apellido_materno:$("f_am").value.trim(),telefono:$("f_tel").value.trim(),correo:$("f_correo").value.trim()};
- const r=editId?await db.from(T.clientes).update(obj).eq("id_cliente",editId):await db.from(T.clientes).insert(obj);
- if(r.error){aviso("No se pudo guardar: "+r.error.message);return}cerrarModal();aviso("Cliente guardado");cargarTodo();
-}
-async function eliminarCliente(id){if(!confirm("¿Eliminar este cliente?"))return;const r=await db.from(T.clientes).delete().eq("id_cliente",id);if(r.error)aviso("No se pudo eliminar: "+r.error.message);else{aviso("Cliente eliminado");cargarTodo()}}
+async function guardarCliente(ev){ev.preventDefault();const obj={nombres:$("f_nombres").value.trim(),apellido_paterno:$("f_ap").value.trim(),apellido_materno:$("f_am").value.trim(),telefono:$("f_tel").value.trim(),correo:$("f_correo").value.trim()};const r=editId?await db.from(T.clientes).update(obj).eq("id_cliente",editId):await db.from(T.clientes).insert(obj);if(r.error)return aviso("No se pudo guardar: "+r.error.message);cerrarModal();aviso("Cliente guardado");await cargarTodo()}
+async function eliminarCliente(id){if(!confirm("¿Eliminar este cliente? Si tiene eventos relacionados, la base de datos puede impedirlo."))return;const r=await db.from(T.clientes).delete().eq("id_cliente",id);if(r.error)aviso("No se pudo eliminar: "+r.error.message);else{aviso("Cliente eliminado");await cargarTodo()}}
 function editarCliente(id){abrirCliente(id)}
 
 function formEvento(e={}){
  const opts=clientes.map(c=>`<option value="${c.id_cliente}" ${String(c.id_cliente)===String(e.id_cliente)?"selected":""}>${esc(nombreCliente(c.id_cliente))}</option>`).join("");
  return `<form class="form" onsubmit="guardarEvento(event)"><div class="form-grid">
- <div><label>Cliente *</label><select id="e_cliente" required><option value="">Selecciona</option>${opts}</select></div>
- <div><label>Tipo de evento</label><input id="e_tipo" value="${esc(e.tipo_evento)}" placeholder="Boda, cumpleaños..."></div>
- <div><label>Fecha *</label><input id="e_fecha" type="date" required value="${esc(e.fecha_evento)}"></div>
- <div><label>Estado</label><select id="e_estado"><option ${e.estado_evento==="Pendiente"?"selected":""}>Pendiente</option><option ${e.estado_evento==="Confirmado"?"selected":""}>Confirmado</option><option ${e.estado_evento==="Finalizado"?"selected":""}>Finalizado</option><option ${e.estado_evento==="Cancelado"?"selected":""}>Cancelado</option></select></div>
- <div><label>Hora de inicio</label><input id="e_hora" type="time" value="${esc(e.hora_evento)}"></div>
- <div><label>Hora de fin</label><input id="e_fin" type="time" value="${esc(e.hora_fin)}"></div>
- </div><br><button class="primary">Guardar evento</button></form>`;
-}
+<div><label>Cliente *</label><select id="e_cliente" required><option value="">Selecciona</option>${opts}</select></div>
+<div><label>Tipo de evento</label><input id="e_tipo" value="${esc(e.tipo_evento)}" placeholder="Boda, cumpleaños..."></div>
+<div><label>Fecha *</label><input id="e_fecha" type="date" required value="${esc(e.fecha_evento)}"></div>
+<div><label>Estado</label><select id="e_estado"><option ${e.estado_evento==="Pendiente"||!e.estado_evento?"selected":""}>Pendiente</option><option ${e.estado_evento==="Confirmado"?"selected":""}>Confirmado</option><option ${e.estado_evento==="Finalizado"?"selected":""}>Finalizado</option><option ${e.estado_evento==="Cancelado"?"selected":""}>Cancelado</option></select></div>
+<div><label>Hora de inicio</label><input id="e_hora" type="time" value="${esc(e.hora_evento)}"></div><div><label>Hora de fin</label><input id="e_fin" type="time" value="${esc(e.hora_fin)}"></div>
+</div><br><button class="primary">Guardar evento</button></form>`}
 function abrirEvento(id=null){if(!clientes.length){aviso("Primero registra un cliente");return}editId=id;abrirModal(id?"Editar evento":"Nuevo evento",formEvento(id?eventos.find(x=>x.id_evento==id):{}))}
-async function guardarEvento(ev){
- ev.preventDefault();
- const obj={id_cliente:Number($("e_cliente").value),fecha_evento:$("e_fecha").value,hora_evento:$("e_hora").value||null,hora_fin:$("e_fin").value||null,tipo_evento:$("e_tipo").value.trim(),estado_evento:$("e_estado").value};
- const r=editId?await db.from(T.eventos).update(obj).eq("id_evento",editId):await db.from(T.eventos).insert(obj);
- if(r.error){aviso("No se pudo guardar: "+r.error.message);return}cerrarModal();aviso("Evento guardado");cargarTodo();
-}
-async function eliminarEvento(id){if(!confirm("¿Eliminar este evento? Los pagos relacionados pueden impedirlo."))return;const r=await db.from(T.eventos).delete().eq("id_evento",id);if(r.error)aviso("No se pudo eliminar: "+r.error.message);else{aviso("Evento eliminado");cargarTodo()}}
+async function guardarEvento(ev){ev.preventDefault();const obj={id_cliente:Number($("e_cliente").value),fecha_evento:$("e_fecha").value,hora_evento:$("e_hora").value||null,hora_fin:$("e_fin").value||null,tipo_evento:$("e_tipo").value.trim(),estado_evento:$("e_estado").value};const r=editId?await db.from(T.eventos).update(obj).eq("id_evento",editId):await db.from(T.eventos).insert(obj);if(r.error)return aviso("No se pudo guardar: "+r.error.message);cerrarModal();aviso("Evento guardado");await cargarTodo()}
+async function eliminarEvento(id){if(!confirm("¿Eliminar este evento? Si tiene pagos relacionados, la base de datos puede impedirlo."))return;const r=await db.from(T.eventos).delete().eq("id_evento",id);if(r.error)aviso("No se pudo eliminar: "+r.error.message);else{aviso("Evento eliminado");await cargarTodo()}}
 function editarEvento(id){abrirEvento(id)}
 
-function formServicio(s={}){
- return `<form class="form" onsubmit="guardarServicio(event)"><div class="form-grid">
- <div class="full"><label>Nombre del servicio *</label><input id="s_nombre" required value="${esc(s.nombre_servicio)}"></div>
- <div><label>Precio unitario</label><input id="s_precio" type="number" step="0.01" min="0" value="${esc(s.precio_unitario)}"></div>
- <div class="full"><label>Descripción</label><textarea id="s_desc" rows="3">${esc(s.descripcion)}</textarea></div>
- </div><br><button class="primary">Guardar servicio</button></form>`;
-}
+function formServicio(s={}){return `<form class="form" onsubmit="guardarServicio(event)"><div class="form-grid">
+<div class="full"><label>Nombre del servicio *</label><input id="s_nombre" required value="${esc(s.nombre_servicio)}"></div>
+<div><label>Precio unitario</label><input id="s_precio" type="number" step="0.01" min="0" value="${esc(s.precio_unitario)}"></div>
+<div class="full"><label>Descripción</label><textarea id="s_desc" rows="3">${esc(s.descripcion)}</textarea></div>
+</div><br><button class="primary">Guardar servicio</button></form>`}
 function abrirServicio(id=null){editId=id;abrirModal(id?"Editar servicio":"Nuevo servicio",formServicio(id?servicios.find(x=>x.id_servicio==id):{}))}
-async function guardarServicio(ev){
- ev.preventDefault();const obj={nombre_servicio:$("s_nombre").value.trim(),precio_unitario:Number($("s_precio").value||0),descripcion:$("s_desc").value.trim()};
- const r=editId?await db.from(T.servicios).update(obj).eq("id_servicio",editId):await db.from(T.servicios).insert(obj);
- if(r.error)aviso("No se pudo guardar: "+r.error.message);else{cerrarModal();aviso("Servicio guardado");cargarTodo()}
-}
-async function eliminarServicio(id){if(!confirm("¿Eliminar este servicio?"))return;const r=await db.from(T.servicios).delete().eq("id_servicio",id);if(r.error)aviso("No se pudo eliminar: "+r.error.message);else{aviso("Servicio eliminado");cargarTodo()}}
+async function guardarServicio(ev){ev.preventDefault();const obj={nombre_servicio:$("s_nombre").value.trim(),precio_unitario:Number($("s_precio").value||0),descripcion:$("s_desc").value.trim()};const r=editId?await db.from(T.servicios).update(obj).eq("id_servicio",editId):await db.from(T.servicios).insert(obj);if(r.error)return aviso("No se pudo guardar: "+r.error.message);cerrarModal();aviso("Servicio guardado");await cargarTodo()}
+async function eliminarServicio(id){if(!confirm("¿Eliminar este servicio?"))return;const r=await db.from(T.servicios).delete().eq("id_servicio",id);if(r.error)aviso("No se pudo eliminar: "+r.error.message);else{aviso("Servicio eliminado");await cargarTodo()}}
 function editarServicio(id){abrirServicio(id)}
 
-function formEmpleado(e={}){
- return `<form class="form" onsubmit="guardarEmpleado(event)"><div class="form-grid">
- <div><label>Nombres *</label><input id="m_nombres" required value="${esc(e.nombres)}"></div>
- <div><label>Apellido paterno</label><input id="m_ap" value="${esc(e.apellido_paterno)}"></div>
- <div><label>Apellido materno</label><input id="m_am" value="${esc(e.apellido_materno)}"></div>
- <div><label>Teléfono</label><input id="m_tel" value="${esc(e.telefono)}"></div>
- <div><
+function formEmpleado(e={}){return `<form class="form" onsubmit="guardarEmpleado(event)"><div class="form-grid">
+<div><label>Nombres *</label><input id="m_nombres" required value="${esc(e.nombres)}"></div><div><label>Apellido paterno</label><input id="m_ap" value="${esc(e.apellido_paterno)}"></div>
+<div><label>Apellido materno</label><input id="m_am" value="${esc(e.apellido_materno)}"></div><div><label>Teléfono</label><input id="m_tel" value="${esc(e.telefono)}"></div>
+<div><label>Puesto</label><input id="m_puesto" value="${esc(e.puesto)}"></div><div><label>Salario</label><input id="m_salario" type="number" step="0.01" min="0" value="${esc(e.salario)}"></div>
+</div><br><button class="primary">Guardar empleado</button></form>`}
+function abrirEmpleado(id=null){editId=id;abrirModal(id?"Editar empleado":"Nuevo empleado",formEmpleado(id?empleados.find(x=>x.id_empleado==id):{}))}
+async function guardarEmpleado(ev){ev.preventDefault();const obj={nombres:$("m_nombres").value.trim(),apellido_paterno:$("m_ap").value.trim(),apellido_materno:$("m_am").value.trim(),telefono:$("m_tel").value.trim(),puesto:$("m_puesto").value.trim(),salario:Number($("m_salario").value||0)};const r=editId?await db.from(T.empleados).update(obj).eq("id_empleado",editId):await db.from(T.empleados).insert(obj);if(r.error)return aviso("No se pudo guardar: "+r.error.message);cerrarModal();aviso("Empleado guardado");await cargarTodo()}
+async function eliminarEmpleado(id){if(!confirm("¿Eliminar este empleado? Si está asignado a un evento, la base de datos puede impedirlo."))return;const r=await db.from(T.empleados).delete().eq("id_empleado",id);if(r.error)aviso("No se pudo eliminar: "+r.error.message);else{aviso("Empleado eliminado");await cargarTodo()}}
+function editarEmpleado(id){abrirEmpleado(id)}
+
+function formPago(p={}){const opts=eventos.map(e=>`<option value="${e.id_evento}" ${String(e.id_evento)===String(p.id_evento)?"selected":""}>${esc(nombreEvento(e.id_evento))}</option>`).join("");return `<form class="form" onsubmit="guardarPago(event)"><div class="form-grid">
+<div class="full"><label>Evento *</label><select id="p_evento" required><option value="">Selecciona</option>${opts}</select></div>
+<div><label>Fecha *</label><input id="p_fecha" type="date" required value="${esc(p.fecha_pago||new Date().toISOString().slice(0,10))}"></div>
+<div><label>Monto *</label><input id="p_monto" type="number" step="0.01" min="0" required value="${esc(p.monto)}"></div>
+</div><br><button class="primary">Guardar pago</button></form>`}
+function abrirPago(){if(!eventos.length){aviso("Primero registra un evento");return}editId=null;abrirModal("Nuevo pago",formPago())}
+async function guardarPago(ev){ev.preventDefault();const obj={id_evento:Number($("p_evento").value),fecha_pago:$("p_fecha").value,monto:Number($("p_monto").value)};const r=await db.from(T.pagos).insert(obj);if(r.error)return aviso("No se pudo guardar: "+r.error.message);cerrarModal();aviso("Pago registrado");await cargarTodo()}
+async function eliminarPago(id){if(!confirm("¿Eliminar este pago?"))return;const r=await db.from(T.pagos).delete().eq("id_pago",id);if(r.error)aviso("No se pudo eliminar: "+r.error.message);else{aviso("Pago eliminado");await cargarTodo()}}
+
+window.addEventListener("load",cargarTodo);
+</script>
+</body>
+</html>
