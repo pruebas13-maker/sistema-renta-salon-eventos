@@ -367,6 +367,21 @@ const db = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
+        <script>
+async function probarBaseDatos() {
+    const { data, error } = await db
+        .from("clientes")
+        .select("*");
+
+    if (error) {
+        alert("Error de conexión con la base de datos");
+        console.log(error);
+        return;
+    }
+
+    alert("Conexión correcta. Clientes registrados: " + data.length);
+}
+</script>
     </script>
 </body>
 </html>
