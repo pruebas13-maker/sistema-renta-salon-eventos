@@ -1,1 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Sistema Renta Salón de Eventos</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #eef1f7;
+    color: #1f2937;
+}
+
+.app {
+    max-width: 1100px;
+    margin: auto;
+    min-height: 100vh;
+    background: #f7f8fc;
+}
+
+/* ENCABEZADO */
+.header {
+    background: linear-gradient(135deg, #24115f, #5935c9);
+    color: white;
+    padding: 25px 20px;
+}
+
+.header h1 {
+    font-size: 25px;
+    margin-bottom: 7px;
+}
+
+.header p {
+    opacity: 0.85;
+}
+
+/* CONTENIDO */
+.content {
+    padding: 20px;
+}
+
+/* TARJETAS */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+}
+
+.card .icon {
+    font-size: 27px;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.card strong {
+    font-size: 25px;
+}
+
+/* SECCIONES */
+.section {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.section-title h2 {
+    font-size: 19px;
+}
+
+/* BOTONES */
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 11px 16px;
+    background: #5935c9;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* EVENTOS */
+.event {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.event:last-child {
+    margin-bottom: 0;
+}
+
+.event-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.event h3 {
+    font-size: 16px;
+}
+
+.status {
+    background: #dcfce7;
+    color: #166534;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.event p {
+    color: #6b7280;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* MENÚ */
+.menu {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.menu button {
+    background: white;
+    color: #333;
+    border: 1px solid #e5e7eb;
+    padding: 18px 10px;
+}
+
+.menu button span {
+    display: block;
+    font-size: 25px;
+    margin-bottom: 7px;
+}
+
+/* AVISO */
+.demo {
+    background: #fff3cd;
+    color: #664d03;
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 750px) {
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .menu {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 430px) {
+
+    .header h1 {
+        font-size: 21px;
+    }
+
+    .content {
+        padding: 14px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .card strong {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="demo">
+        DEMO — Sistema de Renta de Salón de Eventos
+    </div>
+
+    <header class="header">
+        <h1>🏛️ Sistema de Eventos</h1>
+        <p>Administración de renta de salón</p>
+    </header>
+
+    <main class="content">
+
+        <section class="cards">
+
+            <div class="card">
+                <div class="icon">👥</div>
+                <h3>Clientes</h3>
+                <strong>27</strong>
+            </div>
+
+            <div class="card">
+                <div class="icon">📅</div>
+                <h3>Eventos</h3>
+                <strong>12</strong>
+            </div>
+
+            <div class="card">
+                <div class="icon">🛎️</div>
+                <h3>Servicios</h3>
+                <strong>18</strong>
+            </div>
+
+            <div class="card">
+                <div class="icon">💰</div>
+                <h3>Pagos</h3>
+                <strong>$18,500</strong>
+            </div>
+
+        </section>
+
+
+        <section class="section">
+
+            <div class="section-title">
+                <h2>📅 Próximos eventos</h2>
+                <button onclick="nuevoEvento()">+ Nuevo</button>
+            </div>
+
+            <div class="event">
+
+                <div class="event-top">
+                    <h3>🎂 Cumpleaños</h3>
+                    <span class="status">Confirmado</span>
+                </div>
+
+                <p>📅 28 de septiembre de 2026</p>
+                <p>🕐 18:00 - 23:00</p>
+                <p>👤 Cliente: Juan Pérez</p>
+
+            </div>
+
+
+            <div class="event">
+
+                <div class="event-top">
+                    <h3>💍 Boda</h3>
+                    <span class="status">Confirmado</span>
+                </div>
+
+                <p>📅 30 de septiembre de 2026</p>
+                <p>🕐 17:00 - 00:00</p>
+                <p>👤 Cliente: María López</p>
+
+            </div>
+
+
+            <div class="event">
+
+                <div class="event-top">
+                    <h3>🎓 Graduación</h3>
+                    <span class="status">Pendiente</span>
+                </div>
+
+                <p>📅 4 de octubre de 2026</p>
+                <p>🕐 16:00 - 22:00</p>
+                <p>👤 Cliente: Carlos Hernández</p>
+
+            </div>
+
+        </section>
+
+
+        <section class="section">
+
+            <div class="section-title">
+                <h2>⚡ Accesos rápidos</h2>
+            </div>
+
+            <div class="menu">
+
+                <button onclick="mensaje('Clientes')">
+                    <span>👥</span>
+                    Clientes
+                </button>
+
+                <button onclick="mensaje('Eventos')">
+                    <span>📅</span>
+                    Eventos
+                </button>
+
+                <button onclick="mensaje('Servicios')">
+                    <span>🛎️</span>
+                    Servicios
+                </button>
+
+                <button onclick="mensaje('Empleados')">
+                    <span>👨‍💼</span>
+                    Empleados
+                </button>
+
+                <button onclick="mensaje('Pagos')">
+                    <span>💰</span>
+                    Pagos
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+function mensaje(nombre) {
+    alert("Módulo de " + nombre + "\n\nLo conectaremos con la base de datos en la siguiente etapa.");
+}
+
+function nuevoEvento() {
+    alert("Formulario para registrar un nuevo evento.\n\nLo conectaremos con la base de datos posteriormente.");
+}
+
+</script>
+
+</body>
+</html>
